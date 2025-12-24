@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "send-alerts": "node automation.js"
+    "send-alerts": "node automation.js",
+    "build": "echo 'No build needed'"
   },
   "keywords": [
     "data-science",
