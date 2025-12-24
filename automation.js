@@ -18,8 +18,11 @@ setInterval(async () => {
     }
 }, 5 * 60 * 1000);
 
+let lastRunTime = null;
+
 async function sendAlerts() {
-    console.log(`[${new Date().toISOString()}] Checking for updates...`);
+    lastRunTime = new Date();
+    console.log(`[${lastRunTime.toISOString()}] Checking for updates...`);
 
     try {
         // 1. Fetch Subscribers
@@ -90,3 +93,8 @@ const INTERVAL = 24 * 60 * 60 * 1000;
 console.log(`Automation service started. Running every ${INTERVAL / (60 * 60 * 1000)} hours.`);
 
 setInterval(sendAlerts, INTERVAL);
+
+// Export for checking status
+module.exports = {
+    getLastRun: () => lastRunTime
+};

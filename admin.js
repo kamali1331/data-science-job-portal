@@ -9,6 +9,44 @@ function openTab(tabId) {
     event.target.classList.add('active');
 }
 
+// --- Dashboard Logic ---
+async function loadStats() {
+    try {
+        // Fetch Counts
+        const resStats = await fetch(`${API_URL}/stats`);
+        const stats = await resStats.json();
+
+        document.getElementById('stats-users').textContent = stats.users;
+        document.getElementById('stats-jobs').textContent = stats.jobs;
+        document.getElementById('stats-subs').textContent = stats.subscribers;
+
+        // Fetch Automation Status
+        const resAuto = await fetch(`${API_URL}/automation-status`);
+        const auto = await resAuto.json();
+
+        const timeElem = document.getElementById('automation-status');
+        if (auto.lastRun) {
+            const date = new Date(auto.lastRun);
+            timeElem.textContent = date.toLocaleString() + ` (${timeSince(date)} ago)`;
+        } else {
+            timeElem.textContent = "Has not run yet (Server just started)";
+        }
+
+    } catch (err) {
+        console.error("Stats error", err);
+    }
+}
+
+function timeSince(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
+    let interval = seconds / 3600;
+    if (interval > 1) return Math.floor(interval) + " hours";
+    interval = seconds / 60;
+    if (interval > 1) return Math.floor(interval) + " minutes";
+    return Math.floor(seconds) + " seconds";
+}
+
+
 // --- Jobs Management ---
 
 // Fetch and List Jobs
@@ -87,4 +125,8 @@ async function deleteJob(id) {
 }
 
 // Initial Load
-document.addEventListener('DOMContentLoaded', loadJobs);
+// Initial Load
+document.addEventListener('DOMContentLoaded', () => {
+    loadJobs();
+    loadStats();
+});

@@ -1,5 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+  // --- Configuration ---
+  // CHANGE THIS to your Render URL (without trailing slash) for production!
+  // Example: const API_BASE_URL = 'https://data-science-job-portal.onrender.com';
+  const API_BASE_URL = 'https://data-science-job-portal.onrender.com';
+
+
   // --- Navigation & Scroll Animations ---
   const hamburger = document.querySelector('.hamburger');
   const navLinks = document.querySelector('.nav-links');
@@ -43,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   async function fetchJobs() {
     try {
-      const response = await fetch('http://localhost:3000/api/jobs');
+      const response = await fetch(`${API_BASE_URL}/api/jobs`);
       if (!response.ok) throw new Error("Failed to fetch jobs");
       jobs = await response.json();
       renderJobs(jobs);
@@ -198,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function fetchRoadmaps() {
     roadmapList.innerHTML = '<p>Loading...</p>';
     try {
-      const response = await fetch('http://localhost:3000/api/roadmaps');
+      const response = await fetch(`${API_BASE_URL}/api/roadmaps`);
       if (!response.ok) throw new Error('Failed to fetch');
 
       const roadmaps = await response.json();
@@ -224,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
                   <h4>${item.title} <span style="font-size:0.8em; font-weight:normal; color:#888;">(${item.category})</span></h4>
                   <p>${item.description || ''}</p>
               </div>
-              <a href="http://localhost:3000/${item.file_path}" target="_blank" class="btn-primary" style="padding: 5px 10px; font-size: 0.8rem;">Download</a>
+              <a href="${API_BASE_URL}/${item.file_path}" target="_blank" class="btn-primary" style="padding: 5px 10px; font-size: 0.8rem;">Download</a>
           `;
       roadmapList.appendChild(div);
     });
@@ -240,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
       formData.append('roadmapFile', document.getElementById('roadmap-file').files[0]);
 
       try {
-        const res = await fetch('http://localhost:3000/api/roadmaps', {
+        const res = await fetch(`${API_BASE_URL}/api/roadmaps`, {
           method: 'POST',
           body: formData
         });
@@ -287,7 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
   async function fetchInterviewQuestions() {
     accordionContainer.innerHTML = '<p>Loading questions...</p>';
     try {
-      const response = await fetch('http://localhost:3000/api/interview-questions');
+      const response = await fetch(`${API_BASE_URL}/api/interview-questions`);
       const questions = await response.json();
       renderInterviewQuestions(questions);
     } catch (error) {
@@ -350,7 +356,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // For now, let's just grab the text from the DOM or fetch if needed.
     // Better to fetch to ensure we have clean data.
     try {
-      const response = await fetch('http://localhost:3000/api/interview-questions');
+      const response = await fetch(`${API_BASE_URL}/api/interview-questions`);
       const questions = await response.json();
 
       questions.forEach((item, index) => {
@@ -406,7 +412,7 @@ document.addEventListener('DOMContentLoaded', () => {
     grid.innerHTML = '<p>Loading options...</p>';
 
     try {
-      const response = await fetch('http://localhost:3000/api/mentors');
+      const response = await fetch(`${API_BASE_URL}/api/mentors`);
       const mentors = await response.json();
       grid.innerHTML = '';
 
@@ -498,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     try {
-      const response = await fetch('http://localhost:3000/api/job-alerts', {
+      const response = await fetch(`${API_BASE_URL}/api/job-alerts`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, provider })
@@ -585,7 +591,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const endpoint = isLoginMode ? '/api/login' : '/api/register';
 
       try {
-        const res = await fetch(`http://localhost:3000${endpoint}`, {
+        const res = await fetch(`${API_BASE_URL}${endpoint}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password })

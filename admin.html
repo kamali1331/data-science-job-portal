@@ -122,13 +122,43 @@
         <h2>Admin Dashboard</h2>
 
         <div class="tabs">
-            <button class="tab-btn active" onclick="openTab('jobs')">Manage Jobs</button>
+            <button class="tab-btn active" onclick="openTab('dashboard')">Dashboard</button>
+            <button class="tab-btn" onclick="openTab('jobs')">Manage Jobs</button>
             <button class="tab-btn" onclick="openTab('interview')">Interview Q&A</button>
             <!-- Add more tabs for Mentors if needed -->
         </div>
 
+        <!-- Dashboard Tab -->
+        <div id="dashboard" class="tab-content active">
+            <h3>System Status</h3>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                <div class="stat-card"
+                    style="flex:1; background:#e0f2fe; padding:20px; border-radius:8px; text-align:center;">
+                    <h4>Total Users</h4>
+                    <h2 id="stats-users">--</h2>
+                </div>
+                <div class="stat-card"
+                    style="flex:1; background:#dcfce7; padding:20px; border-radius:8px; text-align:center;">
+                    <h4>Active Jobs</h4>
+                    <h2 id="stats-jobs">--</h2>
+                </div>
+                <div class="stat-card"
+                    style="flex:1; background:#f3e8ff; padding:20px; border-radius:8px; text-align:center;">
+                    <h4>Subscribers</h4>
+                    <h2 id="stats-subs">--</h2>
+                </div>
+            </div>
+
+            <div
+                style="margin-top: 30px; padding: 20px; background: #fff3cd; border-radius: 8px; border-left: 5px solid #ffc107;">
+                <h4>Automation Workflow Status</h4>
+                <p><strong>Last Run:</strong> <span id="automation-status">Checking...</span></p>
+                <small>The workflow checks for new jobs/blogs daily and emails subscribers.</small>
+            </div>
+        </div>
+
         <!-- Manage Jobs Tab -->
-        <div id="jobs" class="tab-content active">
+        <div id="jobs" class="tab-content">
             <h3>Add New Job</h3>
             <form id="job-form">
                 <label>Job Title</label>

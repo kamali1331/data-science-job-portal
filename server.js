@@ -385,9 +385,43 @@ app.post('/api/job-alerts', async (req, res) => {
     }
 });
 
+// --- Admin Stats Endpoints ---
+
+// GET: System Stats
+app.get('/api/stats', async (req, res) => {
+    try {
+        const users = await pool.query('SELECT COUNT(*) FROM users');
+        const jobs = await pool.query('SELECT COUNT(*) FROM jobs');
+        const alerts = await pool.query('SELECT COUNT(*) FROM job_alerts');
+        const blogs = await pool.query('SELECT COUNT(*) FROM blogs'); // Assuming blogs table exists or will exist
+
+        // Handle case where blog table might not exist yet safely if wanted, but assuming standard schema
+
+        res.json({
+            users: parseInt(users.rows[0].count),
+            jobs: parseInt(jobs.rows[0].count),
+            subscribers: parseInt(alerts.rows[0].count),
+            // blogs: parseInt(blogs.rows[0].count) 
+        });
+    } catch (err) {
+        console.error("Error fetching stats:", err);
+        res.status(500).json({ error: "Database Error" });
+    }
+});
+
+// GET: Automation Status
+app.get('/api/automation-status', (req, res) => {
+    if (automationService && automationService.getLastRun) {
+        res.json({ lastRun: automationService.getLastRun() });
+    } else {
+        res.json({ lastRun: null, message: "Service not available" });
+    }
+});
+
 // Start Automation Service (Background 24/7)
+let automationService;
 try {
-    require('./automation');
+    automationService = require('./automation');
     console.log("Automation service integrated.");
 } catch (err) {
     console.error("Failed to start automation service:", err);
