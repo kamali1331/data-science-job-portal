@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Configuration ---
   // CHANGE THIS to your Render URL (without trailing slash) for production!
   // Example: const API_BASE_URL = 'https://data-science-job-portal.onrender.com';
-  const API_BASE_URL = 'https://data-science-job-portal.onrender.com';
+  const API_BASE_URL = 'https://data-science-job-portal-p7hh.onrender.com';
 
 
   // --- Navigation & Scroll Animations ---
