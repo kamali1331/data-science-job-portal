@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+
+# Environment variables
+.env
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Uploads (Local storage is ephemeral on Render, but we exclude local uploads from git)
+assets/roadmaps/*
+!assets/roadmaps/.gitkeep

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Data Science Job Portal</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css"> <!-- Reuse main styles -->
+    <style>
+        body {
+            padding: 30px;
+            background: #f4f7f6;
+        }
+
+        .admin-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-color);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-weight: 600;
+            color: #666;
+            font-size: 1rem;
+        }
+
+        .tab-btn.active {
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        form label {
+            font-weight: 600;
+            display: block;
+            margin-top: 15px;
+        }
+
+        form input,
+        form select,
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+        }
+
+        .submit-btn {
+            margin-top: 20px;
+            width: 100%;
+            padding: 12px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .submit-btn:hover {
+            background: #333;
+        }
+
+        .item-list {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+
+        .admin-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: #f9f9f9;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .delete-btn {
+            color: white;
+            background: red;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="admin-container">
+        <h2>Admin Dashboard</h2>
+
+        <div class="tabs">
+            <button class="tab-btn active" onclick="openTab('jobs')">Manage Jobs</button>
+            <button class="tab-btn" onclick="openTab('interview')">Interview Q&A</button>
+            <!-- Add more tabs for Mentors if needed -->
+        </div>
+
+        <!-- Manage Jobs Tab -->
+        <div id="jobs" class="tab-content active">
+            <h3>Add New Job</h3>
+            <form id="job-form">
+                <label>Job Title</label>
+                <input type="text" id="job-title" placeholder="e.g. Data Scientist" required>
+
+                <label>Company</label>
+                <input type="text" id="job-company" placeholder="e.g. Google" required>
+
+                <label>Location</label>
+                <input type="text" id="job-location" placeholder="e.g. Remote / Bangalore" required>
+
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex:1;">
+                        <label>Type</label>
+                        <select id="job-type">
+                            <option>Full-time</option>
+                            <option>sovereign</option>
+                            <option>Internship</option>
+                            <option>Remote</option>
+                        </select>
+                    </div>
+                    <div style="flex:1;">
+                        <label>Role</label>
+                        <select id="job-role">
+                            <option>Senior</option>
+                            <option>Mid Level</option>
+                            <option>Junior</option>
+                            <option>Entry Level</option>
+                            <option>Fresher</option>
+                            <option>Intern</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">Post Job</button>
+            </form>
+
+            <div class="item-list" id="admin-job-list">
+                <!-- Job List for Deletion -->
+            </div>
+        </div>
+
+        <!-- Manage Interview Tab (Placeholder/Basic) -->
+        <div id="interview" class="tab-content">
+            <h3>Add Interview Question</h3>
+            <p>Coming Soon...</p>
+        </div>
+
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+
+</html>

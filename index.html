@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Data Science & Analytics Job Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="logo">Data Science & Analytics Job Portal</div>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#services">Services</a></li>
+      <li><a href="#resources">Resources</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#" id="login-link">Login</a></li>
+    </ul>
+    <div class="hamburger">
+      <div class="line1"></div>
+      <div class="line2"></div>
+      <div class="line3"></div>
+    </div>
+  </header>
+
+  <!-- ... (skip to end of modals) ... -->
+
+  <!-- Job Alerts Modal -->
+  <div id="job-alerts-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn job-alerts-close-btn">&times;</span>
+      <h3>Get Job Alerts</h3>
+      <p>Connect your accounts to receive personalized job alerts tailored to your profile.</p>
+
+      <div class="alert-options" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+        <!-- LinkedIn -->
+        <button class="connect-btn linkedin-btn" onclick="connectToProvider('LinkedIn')">
+          <i class="fab fa-linkedin"></i> Connect with LinkedIn
+        </button>
+
+        <!-- Google -->
+        <button class="connect-btn google-btn" onclick="connectToProvider('Google')">
+          <i class="fab fa-google"></i> Connect with Google
+        </button>
+
+        <!-- MyJob AI -->
+        <button class="connect-btn myjob-btn" onclick="connectToProvider('MyJob AI')">
+          <i class="fas fa-robot"></i> Connect with MyJob AI
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login/Register Modal -->
+  <div id="login-modal" class="modal">
+    <div class="modal-content login-content" style="max-width: 400px; padding: 40px; border-radius: 12px;">
+      <span class="close-btn login-close-btn">&times;</span>
+      <h3 id="auth-title" style="text-align: center; margin-bottom: 30px; color: var(--text-color); font-size: 1.8rem;">
+        Login</h3>
+
+      <form id="auth-form" style="display: flex; flex-direction: column; gap: 20px;">
+        <div class="form-group">
+          <label for="auth-email" style="display: block; margin-bottom: 8px; font-weight: 500; color: #555;">Email
+            Address</label>
+          <input type="email" id="auth-email" class="auth-input" placeholder="e.g. name@company.com" required />
+        </div>
+
+        <div class="form-group">
+          <label for="auth-password"
+            style="display: block; margin-bottom: 8px; font-weight: 500; color: #555;">Password</label>
+          <input type="password" id="auth-password" class="auth-input" placeholder="Enter your password" required />
+        </div>
+
+        <button type="submit" class="btn-primary auth-btn" id="auth-submit-btn">Login</button>
+      </form>
+
+      <div style="text-align: center; margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee;">
+        <p style="font-size: 0.95rem; color: #666;">
+          <span id="auth-switch-text">New to our platform? </span>
+          <a href="#" id="auth-switch-link"
+            style="color: var(--primary-color); font-weight: 600; text-decoration: none;">Create an account</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Your Gateway to Data Science Careers</h1>
+      <p>Explore jobs, resources, and career guidance curated for analysts and AI aspirants.</p>
+      <a href="#resources" class="btn-primary">Explore Resources</a>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about">
+    <h2>About Us</h2>
+    <p>We help students and professionals break into Data Science, Analytics, AI & ML with job updates, resources, and
+      mentorship. Our mission is to bridge the gap between talent and opportunity, providing a curated platform where
+      you can find the best roles, access learning roadmaps from industry experts, and prepare for interviews with
+      confidence.</p>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services" class="services">
+    <h2>Services Provided</h2>
+    <div class="service-grid">
+      <!-- 1 -->
+      <div class="service-card btn-look">
+        <h3>Career Development Coaching</h3>
+        <p>Personalized guidance for data science and analytics careers.</p>
+      </div>
+      <!-- 2 -->
+      <div class="service-card btn-look">
+        <h3>Educational Consulting</h3>
+        <p>Support for students and professionals choosing the right learning path.</p>
+      </div>
+      <!-- 3 -->
+      <div class="service-card btn-look">
+        <h3>IT Consulting</h3>
+        <p>Data-driven IT solutions and analytics advisory.</p>
+      </div>
+      <!-- 4 -->
+      <div class="service-card btn-look">
+        <h3>Business Analytics</h3>
+        <p>Insights and dashboards for business decision-making.</p>
+      </div>
+      <!-- 5 -->
+      <div class="service-card btn-look">
+        <h3>Presentation Design</h3>
+        <p>Professional presentations for reports, interviews, and demos.</p>
+      </div>
+      <!-- 6 -->
+      <div class="service-card btn-look">
+        <h3>Blogging</h3>
+        <p>Technical and career-focused content creation.</p>
+      </div>
+      <!-- 7 -->
+      <div class="service-card btn-look">
+        <h3>Public Speaking</h3>
+        <p>Talks, workshops, and knowledge-sharing sessions.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Jobs Section -->
+  <!-- Latest Job Blogs Section -->
+  <!-- Resources & Automation Section -->
+  <section id="resources" class="services">
+    <h2>Resources & Automation</h2>
+    <div class="service-grid">
+      <!-- 1. Job Alerts -->
+      <div id="job-alerts-card" class="service-card btn-look">
+        <div class="card-icon"><i class="fas fa-bell"></i></div>
+        <h3>Job Alerts</h3>
+        <p>Get notified about new jobs instantly.</p>
+      </div>
+
+      <!-- 2. Career Mentorship -->
+      <div id="mentorship-card" class="service-card btn-look">
+        <div class="card-icon"><i class="fas fa-user-tie"></i></div>
+        <h3>Career Mentorship</h3>
+        <p>1:1 guidance from industry experts.</p>
+      </div>
+
+      <!-- 3. Interview Preparation -->
+      <div id="interview-card" class="service-card btn-look">
+        <div class="card-icon"><i class="fas fa-clipboard-list"></i></div>
+        <h3>Interview Preparation</h3>
+        <p>Practice with real interview questions.</p>
+      </div>
+
+      <!-- 4. Learning Roadmaps -->
+      <div id="roadmap-card" class="service-card btn-look">
+        <div class="card-icon"><i class="fas fa-map-signs"></i></div>
+        <h3>Learning Roadmaps</h3>
+        <p>Step-by-step guides for your career.</p>
+      </div>
+
+
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact">
+    <h2>Contact Us</h2>
+    <div class="contact-container" style="max-width: 600px; margin: 0 auto; text-align: center;">
+      <p style="margin-bottom: 20px;">Email: <a href="mailto:kamali27cc@gmail.com"
+          style="color: var(--primary-color);">kamali27cc@gmail.com</a></p>
+      <p style="margin-bottom: 30px;">Phone: <a href="tel:9600643131"
+          style="color: var(--primary-color);">9600643131</a></p>
+
+      <form id="contact-form"
+        style="display: flex; flex-direction: column; gap: 15px; text-align: left; background: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05);">
+        <div class="form-group">
+          <label for="contact-name" style="display: block; font-weight: 500; margin-bottom: 5px;">Name</label>
+          <input type="text" id="contact-name"
+            style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" placeholder="Your Name"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="contact-email" style="display: block; font-weight: 500; margin-bottom: 5px;">Email</label>
+          <input type="email" id="contact-email"
+            style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px;" placeholder="Your Email"
+            required>
+        </div>
+        <div class="form-group">
+          <label for="contact-message" style="display: block; font-weight: 500; margin-bottom: 5px;">Queries</label>
+          <textarea id="contact-message" rows="4"
+            style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 6px; resize: vertical;"
+            placeholder="How can we help you?" required></textarea>
+        </div>
+        <button type="submit" class="btn-primary" style="align-self: flex-start; margin-top: 10px;">Send
+          Message</button>
+      </form>
+    </div>
+
+    <div class="social-links-container">
+      <h3>Connect with us</h3>
+      <div class="social-icons">
+        <!-- LinkedIn Company -->
+        <a href="https://www.linkedin.com/company/data-science-analytics-job-portal/" target="_blank" class="social-btn"
+          title="LinkedIn Company">
+          <i class="fab fa-linkedin"></i>
+        </a>
+        <!-- LinkedIn Personal -->
+        <a href="https://www.linkedin.com/in/kamalisridhar/?locale=en_US" target="_blank" class="social-btn"
+          title="LinkedIn (Kamali)">
+          <i class="fab fa-linkedin-in"></i>
+        </a>
+        <!-- X (Twitter) -->
+        <a href="https://x.com/kamali_sridhar" target="_blank" class="social-btn" title="X (Twitter)">
+          <i class="fab fa-twitter"></i> <!-- or fa-x-twitter if using newer FA -->
+        </a>
+        <!-- Preplaced -->
+        <a href="https://preplaced.in/profile/d-s-kamali" target="_blank" class="social-btn" title="Preplaced">
+          <i class="fas fa-chalkboard-teacher"></i>
+        </a>
+        <!-- Topmate -->
+        <a href="https://topmate.io/ds_kamali" target="_blank" class="social-btn" title="Topmate">
+          <i class="fas fa-video"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 Data With Kamali | All Rights Reserved | <a href="#" id="references-link"
+        style="color: #ccc; text-decoration: none;">References</a> | <a href="privacy-policy.html"
+        style="color: #ccc; text-decoration: none;">Privacy Policy</a> | <a href="terms-conditions.html"
+        style="color: #ccc; text-decoration: none;">Terms & Conditions</a> | <a href="legal-information.html"
+        style="color: #ccc; text-decoration: none;">Legal Information</a></p>
+  </footer>
+
+  <!-- References Modal -->
+  <div id="references-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn references-close-btn">&times;</span>
+      <h3>References</h3>
+      <ul style="text-align: left; padding-left: 20px; color: #555;">
+        <li><strong>Google Search:</strong> Job listings and trends.</li>
+        <li><strong>LinkedIn:</strong> Professional networking and job posts.</li>
+        <li><strong>Preplaced & Topmate:</strong> Mentorship platforms.</li>
+        <li><strong>FontAwesome:</strong> Icons used throughout the site.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Application Modal -->
+  <div id="apply-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <h3>Apply for <span id="modal-job-title">Job Position</span></h3>
+      <form id="application-form">
+        <label for="name">Full Name</label>
+        <input type="text" id="name" placeholder="John Doe" required />
+
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="john@example.com" required />
+
+        <label for="resume">Resume Link</label>
+        <input type="url" id="resume" placeholder="Link to LinkedIn or Portfolio" required />
+
+        <button type="submit" class="btn-primary">Submit Application</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Learning Roadmap Modal -->
+  <div id="roadmap-modal" class="modal">
+    <div class="modal-content roadmap-content">
+      <span class="close-btn roadmap-close-btn">&times;</span>
+      <h3>Learning Roadmaps</h3>
+      <p>Download curated roadmaps to guide your data science journey.</p>
+
+      <div id="roadmap-list" class="roadmap-grid">
+        <!-- Roadmaps will be loaded here -->
+        <p>Loading roadmaps...</p>
+      </div>
+
+      <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+      <!-- Simple Upload Section (Hidden toggle or visible for now) -->
+      <button id="toggle-upload-btn" class="btn-secondary" style="font-size: 0.9em;">+ Upload New Roadmap</button>
+      <form id="upload-form" style="display: none; margin-top: 15px;">
+        <h4>Upload Roadmap</h4>
+        <label for="roadmap-title">Title</label>
+        <input type="text" id="roadmap-title" placeholder="e.g. Data Scientist 2025" required>
+
+        <label for="roadmap-category">Category</label>
+        <select id="roadmap-category">
+          <option value="Data Science">Data Science</option>
+          <option value="Data Analytics">Data Analytics</option>
+          <option value="AI & ML">AI & ML</option>
+          <option value="Other">Other</option>
+        </select>
+
+        <label for="roadmap-file">File (PDF/Image)</label>
+        <input type="file" id="roadmap-file" required accept=".pdf,.png,.jpg,.jpeg">
+
+        <button type="submit" class="btn-primary">Upload</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Interview Preparation Modal -->
+  <div id="interview-modal" class="modal">
+    <div class="modal-content interview-content">
+      <span class="close-btn interview-close-btn">&times;</span>
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h3>Interview Preparation</h3>
+        <button id="download-pdf-btn" class="btn-secondary" style="font-size: 0.9rem;"><i class="fas fa-file-pdf"></i>
+          Download PDF</button>
+      </div>
+      <p>Common questions asked in Data Science interviews.</p>
+
+      <div class="accordion-container">
+        <!-- Questions will be rendered here by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Job Alerts Modal -->
+  <div id="job-alerts-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-btn job-alerts-close-btn">&times;</span>
+      <h3>Get Job Alerts</h3>
+      <p>Connect your accounts to receive personalized job alerts tailored to your profile.</p>
+
+      <div class="alert-options" style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+        <!-- LinkedIn -->
+        <button class="connect-btn linkedin-btn" onclick="connectToProvider('LinkedIn')">
+          <i class="fab fa-linkedin"></i> Connect with LinkedIn
+        </button>
+
+        <!-- Google -->
+        <button class="connect-btn google-btn" onclick="connectToProvider('Google')">
+          <i class="fab fa-google"></i> Connect with Google
+        </button>
+
+        <!-- MyJob AI -->
+        <button class="connect-btn myjob-btn" onclick="connectToProvider('MyJob AI')">
+          <i class="fas fa-robot"></i> Connect with MyJob AI
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Career Mentorship Modal -->
+  <div id="mentorship-modal" class="modal">
+    <div class="modal-content mentorship-content">
+      <span class="close-btn mentorship-close-btn">&times;</span>
+      <h3>Career Mentorship</h3>
+      <p>Connect with me for personalized guidance.</p>
+
+      <div class="mentorship-grid">
+        <!-- Topmate Card -->
+        <a href="https://topmate.io/ds_kamali" target="_blank" class="mentor-card topmate-card">
+          <div class="card-icon"><i class="fas fa-video"></i></div>
+          <h4>1:1 Mentorship</h4>
+          <p>Book a slot for Resume Review, Mock Interviews, or Career Guidance.</p>
+          <span class="card-link-text">Visit Topmate <i class="fas fa-arrow-right"></i></span>
+        </a>
+
+        <!-- Preplaced Card -->
+        <a href="https://preplaced.in/profile/d-s-kamali" target="_blank" class="mentor-card preplaced-card">
+          <div class="card-icon"><i class="fas fa-chalkboard-teacher"></i></div>
+          <h4>Long-term Mentorship</h4>
+          <p>End-to-end guidance to help you land your dream data role.</p>
+          <span class="card-link-text">Visit Preplaced <i class="fas fa-arrow-right"></i></span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
