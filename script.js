@@ -3,7 +3,27 @@ document.addEventListener('DOMContentLoaded', () => {
   // --- Configuration ---
   // CHANGE THIS to your Render URL (without trailing slash) for production!
   // Example: const API_BASE_URL = 'https://data-science-job-portal.onrender.com';
-  const API_BASE_URL = 'https://data-science-job-portal-p7hh.onrender.com';
+  // Example: const API_BASE_URL = 'https://data-science-job-portal.onrender.com';
+  // Determine API URL based on current environment
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  const API_BASE_URL = isLocal ? 'http://localhost:3000' : 'https://data-science-job-portal.onrender.com';
+  console.log(`Running in ${isLocal ? 'Local' : 'Production'} mode. API: ${API_BASE_URL}`);
+
+  // Check for Login Success from Google
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('login') === 'success') {
+    const userStr = urlParams.get('user');
+    if (userStr) {
+      try {
+        const user = JSON.parse(decodeURIComponent(userStr));
+        alert(`Welcome back, ${user.email}!`);
+        // Clean URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+        const loginLink = document.getElementById('login-link');
+        if (loginLink) loginLink.textContent = 'Profile';
+      } catch (e) { console.error('Error parsing user data', e); }
+    }
+  }
 
 
   // --- Navigation & Scroll Animations ---
@@ -98,6 +118,56 @@ document.addEventListener('DOMContentLoaded', () => {
       renderJobs(filtered);
     });
   }
+
+  // --- Blogs Logic ---
+  const blogListContainer = document.getElementById('blog-list');
+
+  async function fetchBlogs() {
+    try {
+      const response = await fetch(`${API_BASE_URL}/api/blogs`);
+      if (!response.ok) throw new Error("Failed to fetch blogs");
+      const blogs = await response.json();
+      renderBlogs(blogs);
+    } catch (err) {
+      console.error(err);
+      if (blogListContainer) {
+        blogListContainer.innerHTML = '<p>Latest insights coming soon...</p>';
+      }
+    }
+  }
+
+  function renderBlogs(blogs) {
+    if (!blogListContainer) return;
+    blogListContainer.innerHTML = '';
+
+    if (blogs.length === 0) {
+      blogListContainer.innerHTML = '<p>No blogs available.</p>';
+      return;
+    }
+
+    blogs.forEach(blog => {
+      const blogCard = document.createElement('div');
+      blogCard.className = 'service-card blog-card'; // Reusing service-card style for consistency
+      blogCard.style.maxWidth = '300px';
+      blogCard.style.textAlign = 'left';
+
+      blogCard.innerHTML = `
+        <div style="height: 150px; background-color: #e0f2fe; border-radius: 8px; margin-bottom: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+            ${blog.image_url ? `<img src="${blog.image_url}" alt="${blog.title}" style="width: 100%; height: 100%; object-fit: cover;">` : '<i class="fas fa-newspaper" style="font-size: 3rem; color: var(--primary-color);"></i>'}
+        </div>
+        <h3 style="font-size: 1.1rem; margin-bottom: 10px;">${blog.title}</h3>
+        <p style="font-size: 0.9rem; color: #666; margin-bottom: 15px;">${blog.excerpt || ''}</p>
+        <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; color: #888;">
+            <span>${blog.date || ''}</span>
+            <span style="color: var(--primary-color); font-weight: 600; cursor: pointer;">Read More &rarr;</span>
+        </div>
+      `;
+      blogListContainer.appendChild(blogCard);
+    });
+  }
+
+  // Initial Fetch for Blogs
+  fetchBlogs();
 
   // --- Modal Logic ---
   const modal = document.getElementById('apply-modal');
@@ -495,6 +565,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Connect to Provider Logic
   window.connectToProvider = async function (provider) {
+    if (provider === 'Google') {
+      window.location.href = '/auth/google';
+      return;
+    }
+
+    // Legacy/Simulation for LinkedIn/MyJob AI
     const email = prompt(`Enter your email to connect with ${provider}:`);
     if (!email) return;
 

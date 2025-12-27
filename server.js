@@ -12,6 +12,76 @@ const PORT = process.env.PORT || 3000;
 // --- Security Middleware (Cloudflare-like protections) ---
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const session = require('express-session');
+const passport = require('passport');
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const nodemailer = require('nodemailer');
+
+// --- PASSPORT CONFIGURATION ---
+passport.use(new GoogleStrategy({
+    clientID: process.env.GOOGLE_CLIENT_ID || 'YOUR_CLIENT_ID',
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET || 'YOUR_CLIENT_SECRET',
+    callbackURL: "/auth/google/callback"
+},
+    async (accessToken, refreshToken, profile, done) => {
+        // Simple User Find/Create Logic
+        const email = profile.emails[0].value;
+        try {
+            // Check if user exists
+            let res = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+            let user = res.rows[0];
+
+            if (!user) {
+                // Create new user (using googleId as password placeholder or handle separately)
+                const insert = await pool.query(
+                    'INSERT INTO users (email, password, google_id) VALUES ($1, $2, $3) RETURNING *',
+                    [email, 'google-login', profile.id]
+                );
+                user = insert.rows[0];
+            } else {
+                // Update google_id if missing
+                if (!user.google_id) {
+                    await pool.query('UPDATE users SET google_id = $1 WHERE email = $2', [profile.id, email]);
+                }
+            }
+            return done(null, user);
+        } catch (err) {
+            return done(err, null);
+        }
+    }
+));
+
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+    try {
+        const res = await pool.query('SELECT * FROM users WHERE id = $1', [id]);
+        done(null, res.rows[0]);
+    } catch (err) {
+        done(err, null);
+    }
+});
+
+// --- NODEMAILER CONFIGURATION ---
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER || 'your-email@gmail.com',
+        pass: process.env.EMAIL_PASS || 'your-app-password'
+    }
+});
+
+const sendEmail = async (to, subject, html) => {
+    const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to,
+        subject,
+        html
+    };
+    return transporter.sendMail(mailOptions);
+};
 
 // 1. Secure HTTP Headers
 app.use(helmet());
@@ -27,6 +97,13 @@ app.use(limiter);
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'secret_key',
+    resave: false,
+    saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.static(__dirname)); // Serve static files (HTML, CSS, JS) from current directory
 app.use('/uploads', express.static(path.join(__dirname, 'assets', 'roadmaps')));
 
@@ -88,6 +165,21 @@ const initDB = async () => {
             );
         `);
 
+        // Blogs Table
+        await pool.query('DROP TABLE IF EXISTS blogs CASCADE');
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS blogs (
+                id SERIAL PRIMARY KEY,
+                title VARCHAR(255) NOT NULL,
+                excerpt TEXT,
+                author VARCHAR(100),
+                date VARCHAR(50),
+                image_url VARCHAR(500),
+                link VARCHAR(500),
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        `);
+
         // Jobs Table - DROP to ensure schema update for this task
         await pool.query('DROP TABLE IF EXISTS jobs CASCADE');
         await pool.query(`
@@ -119,9 +211,17 @@ const initDB = async () => {
                 id SERIAL PRIMARY KEY,
                 email VARCHAR(255) UNIQUE NOT NULL,
                 password VARCHAR(255) NOT NULL,
+                google_id VARCHAR(255),
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
         `);
+
+        // Migration: Add google_id if it doesn't exist
+        try {
+            await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS google_id VARCHAR(255);');
+        } catch (e) {
+            console.log("Column google_id might already exist or error adding it:", e.message);
+        }
 
         console.log("Database tables verified.");
         seedData(); // Check and seed initial data
@@ -156,6 +256,30 @@ app.post('/api/register', async (req, res) => {
             return res.status(400).json({ error: "Email already exists." });
         }
         res.status(500).json({ error: "Internal Server Error" });
+    }
+});
+
+// --- GOOGLE OAUTH ROUTES ---
+app.get('/auth/google',
+    passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+app.get('/auth/google/callback',
+    passport.authenticate('google', { failureRedirect: '/?login=failed' }),
+    (req, res) => {
+        // Successful authentication, redirect home.
+        res.redirect('/?login=success&user=' + encodeURIComponent(JSON.stringify(req.user)));
+    }
+);
+
+// --- EMAIL ALERT TEST ROUTE ---
+app.post('/api/test-email', async (req, res) => {
+    const { email } = req.body;
+    try {
+        await sendEmail(email, "Test Alert", "<h1>It Works!</h1><p>Email alerts are configured correctly.</p>");
+        res.json({ message: "Test email sent" });
+    } catch (err) {
+        res.status(500).json({ error: "Failed to send email: " + err.message });
     }
 });
 
@@ -211,6 +335,23 @@ const seedData = async () => {
             ];
             for (const item of mentors) {
                 await pool.query('INSERT INTO mentors (name, platform, description, link, icon_class) VALUES ($1, $2, $3, $4, $5)', [item.name, item.platform, item.description, item.link, item.icon]);
+            }
+        }
+
+        // Seed Blogs
+        const bCheck = await pool.query('SELECT COUNT(*) FROM blogs');
+        if (parseInt(bCheck.rows[0].count) === 0) {
+            console.log("Seeding Blogs...");
+            const blogs = [
+                { title: "Breaking into Data Science in 2025", excerpt: "Navigate the current job market with essential skills and strategies to land your first role.", author: "Kamali S.", date: "Jan 15, 2025", image: "https://cdn-icons-png.flaticon.com/512/3067/3067254.png" },
+                { title: "Top Data Science Tools & Technologies", excerpt: "Stay ahead with our guide to the most in-demand software, from Python to Power BI.", author: "Kamali S.", date: "Jan 15, 2025", image: "https://cdn-icons-png.flaticon.com/512/2103/2103633.png" },
+                { title: "A Day in the Life of a Data Scientist", excerpt: "Get an inside look at the daily responsibilities and challenges of a modern data professional.", author: "Kamali S.", date: "Jan 15, 2025", image: "https://cdn-icons-png.flaticon.com/512/9324/9324706.png" }
+            ];
+            for (const blog of blogs) {
+                await pool.query(
+                    'INSERT INTO blogs (title, excerpt, author, date, image_url) VALUES ($1, $2, $3, $4, $5)',
+                    [blog.title, blog.excerpt, blog.author, blog.date, blog.image]
+                );
             }
         }
 

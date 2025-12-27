@@ -1,11 +1,21 @@
 require('dotenv').config();
 const { Pool } = require('pg');
+const nodemailer = require('nodemailer');
 
 // Database Connection
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
         rejectUnauthorized: false
+    }
+});
+
+// Nodemailer Transporter
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
     }
 });
 
@@ -39,49 +49,55 @@ async function sendAlerts() {
         const questions = await pool.query('SELECT * FROM interview_questions ORDER BY id DESC LIMIT 2');
         const mentors = await pool.query('SELECT * FROM mentors ORDER BY id DESC LIMIT 2');
 
-        // 3. Send Alerts (Simulation)
+        // 3. Send Alerts
         console.log(`Sending updates to ${subscribers.rows.length} subscribers...`);
 
+        // Prepare HTML Content
+        let contentHtml = `<h2>Weekly Data Science Update</h2>`;
+
+        if (jobs.rows.length > 0) {
+            contentHtml += `<h3>🔥 Latest Jobs</h3><ul>`;
+            jobs.rows.forEach(job => {
+                contentHtml += `<li><strong>${job.title}</strong> at ${job.company} (${job.location})</li>`;
+            });
+            contentHtml += `</ul>`;
+        }
+
+        if (blogs.rows.length > 0) {
+            contentHtml += `<h3>📰 New Blogs</h3><ul>`;
+            blogs.rows.forEach(blog => {
+                contentHtml += `<li>${blog.title}</li>`;
+            });
+            contentHtml += `</ul>`;
+        }
+
+        if (roadmaps.rows.length > 0) {
+            contentHtml += `<h3>🗺️ New Roadmaps</h3><ul>`;
+            roadmaps.rows.forEach(map => {
+                contentHtml += `<li>${map.title} (${map.category})</li>`;
+            });
+            contentHtml += `</ul>`;
+        }
+
+        contentHtml += `<p>Visit <a href="https://data-science-job-portal.onrender.com">Data Science Job Portal</a> for more!</p>`;
+
+        // Send to each subscriber
         for (const sub of subscribers.rows) {
-            console.log(`\n---------------------------------------------------`);
-            console.log(`To: ${sub.email} (${sub.provider})`);
-            console.log(`Subject: Your Weekly Data Science Update`);
-
-            // Jobs
-            if (jobs.rows.length > 0) {
-                console.log(`🔥 LATEST JOBS:`);
-                jobs.rows.forEach(job => console.log(` - ${job.title} at ${job.company} (via ${job.source || 'Direct'})`));
+            try {
+                await transporter.sendMail({
+                    from: process.env.EMAIL_USER,
+                    to: sub.email,
+                    subject: 'Your Weekly Data Science Update',
+                    html: contentHtml
+                });
+                console.log(`Email sent to ${sub.email}`);
+            } catch (emailErr) {
+                console.error(`Failed to send email to ${sub.email}:`, emailErr.message);
             }
-
-            // Blogs
-            if (blogs.rows.length > 0) {
-                console.log(`📰 LATEST BLOGS:`);
-                blogs.rows.forEach(blog => console.log(` - ${blog.title} (${blog.source})`));
-            }
-
-            // Roadmaps
-            if (roadmaps.rows.length > 0) {
-                console.log(`🗺️ NEW ROADMAPS:`);
-                roadmaps.rows.forEach(map => console.log(` - ${map.title} (${map.category})`));
-            }
-
-            // Interview Questions
-            if (questions.rows.length > 0) {
-                console.log(`🧠 INTERVIEW PREP:`);
-                questions.rows.forEach(q => console.log(` - Q: ${q.question}`));
-            }
-
-            // Mentors
-            if (mentors.rows.length > 0) {
-                console.log(`👨‍🏫 NEW MENTORS:`);
-                mentors.rows.forEach(m => console.log(` - ${m.name} on ${m.platform}`));
-            }
-            console.log(`---------------------------------------------------\n`);
         }
 
     } catch (err) {
         console.error("Error in automation cycle:", err);
-        // Don't exit process, just log error and wait for next cycle
     }
 }
 
