@@ -3,12 +3,7 @@ const { Pool } = require('pg');
 const nodemailer = require('nodemailer');
 
 // Database Connection
-const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-        rejectUnauthorized: false
-    }
-});
+const pool = require('./config/db');
 
 // Nodemailer Transporter
 const transporter = nodemailer.createTransport({
