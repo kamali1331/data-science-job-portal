@@ -4,6 +4,9 @@
  The platform focuses on freshers and early-career professionals, while also supporting recruiters in discovering skilled data talent efficiently.
  This project is built with a modular, scalable architecture and follows real-world software development practices, making it suitable for production, internships, and open-source contributions
 
+# Live demo 
+[Website :https://data-science-job-portal.onrender.com/]
+
 # 🎯 Key Features
 
  Role-based job listings (Data Analyst, Business Analyst, Data Scientist)
@@ -65,10 +68,10 @@ cd frontend
 npm install
 npm start
 
-📄 License
+# 📄 License
 This project is licensed under the MIT License, allowing free use, modification, and distribution.
 
-data-science-job-portal/
+# data-science-job-portal/
 │
 ├── backend/
 │   ├── app.py                 # Main backend application (API entry point)
@@ -140,9 +143,9 @@ If you’re interested in collaboration or partnership, feel free to reach out.
 
 # 📬 Contact & Community
 
-Founder: Kamali
-Email id : kamali27ccgamail.com
-Project Website: https://data-science-job-portal.onrender.com/ For more details check out my website 
+[Founder: Kamali]
+[Email id : kamali27ccgamail.com]
+[Project Website: https://data-science-job-portal.onrender.com/] For more details check out my website 
 Let’s build a transparent, accessible, and data-driven hiring platform together 🚀
 
 
