@@ -17,13 +17,7 @@ export default function Resources({ openJobAlerts, openMentorship, openInterview
             color: "bg-amber-500",
             action: openJobAlerts
         },
-        {
-            title: "Career Mentorship",
-            desc: "1:1 guidance from industry experts.",
-            icon: <FaUserTie className="text-2xl text-white" />,
-            color: "bg-purple-600",
-            action: openMentorship
-        },
+
         {
             title: "Interview Preparation",
             desc: "Practice with real interview questions.",
@@ -35,7 +29,7 @@ export default function Resources({ openJobAlerts, openMentorship, openInterview
             title: "Learning Roadmaps",
             desc: "Step-by-step guides for your career.",
             icon: <FaMapSigns className="text-2xl text-white" />,
-            color: "bg-blue-500",
+            color: "bg-primary",
             action: openRoadmap
         }
     ];
@@ -55,7 +49,7 @@ export default function Resources({ openJobAlerts, openMentorship, openInterview
                             <div className={`w-12 h-12 ${item.color} rounded-xl flex items-center justify-center mb-4 shadow-lg`}>
                                 {item.icon}
                             </div>
-                            <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white group-hover:text-blue-600 transition-colors">{item.title}</h3>
+                            <h3 className="text-xl font-bold mb-2 text-gray-900 dark:text-white group-hover:text-primary transition-colors">{item.title}</h3>
                             <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">{item.desc}</p>
                         </div>
                     ))}

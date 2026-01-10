@@ -22,9 +22,9 @@ export default function MentorshipModal({ isOpen, onClose }: ModalProps) {
 
         <div className="grid md:grid-cols-2 gap-6">
           {/* Topmate */}
-          <a 
-            href="https://topmate.io/ds_kamali" 
-            target="_blank" 
+          <a
+            href="https://topmate.io/ds_kamali"
+            target="_blank"
             className="group block p-6 rounded-xl bg-amber-50 dark:bg-zinc-800 border-2 border-transparent hover:border-amber-400 transition-all"
           >
             <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center mb-4 text-amber-600">
@@ -38,17 +38,17 @@ export default function MentorshipModal({ isOpen, onClose }: ModalProps) {
           </a>
 
           {/* Preplaced */}
-          <a 
-            href="https://preplaced.in/profile/d-s-kamali" 
-            target="_blank" 
-            className="group block p-6 rounded-xl bg-blue-50 dark:bg-zinc-800 border-2 border-transparent hover:border-blue-500 transition-all"
+          <a
+            href="https://preplaced.in/profile/d-s-kamali"
+            target="_blank"
+            className="group block p-6 rounded-xl bg-blue-50 dark:bg-zinc-800 border-2 border-transparent hover:border-primary transition-all"
           >
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 text-blue-600">
+            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4 text-primary">
               <FaChalkboardTeacher size={24} />
             </div>
             <h4 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Long-term Mentorship</h4>
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">End-to-end guidance to help you land your dream data role.</p>
-            <span className="text-blue-600 font-medium text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
+            <span className="text-primary font-medium text-sm flex items-center gap-1 group-hover:gap-2 transition-all">
               Visit Preplaced <FaArrowRight size={12} />
             </span>
           </a>

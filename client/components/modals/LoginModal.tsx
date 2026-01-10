@@ -71,7 +71,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                                 type="email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800 focus:ring-2 focus:ring-primary outline-none transition-all"
                                 placeholder="name@company.com"
                                 required
                             />
@@ -83,7 +83,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                                 type="password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
+                                className="w-full px-4 py-2 rounded-xl border border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800 focus:ring-2 focus:ring-primary outline-none transition-all"
                                 placeholder="Enter your password"
                                 required
                             />
@@ -92,7 +92,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition-all shadow-lg hover:shadow-blue-500/30 disabled:opacity-50"
+                            className="w-full bg-primary hover:bg-blue-700 text-white font-semibold py-3 rounded-xl transition-all shadow-lg hover:shadow-blue-500/30 disabled:opacity-50"
                         >
                             {loading ? 'Processing...' : (isLoginMode ? 'Login' : 'Register')}
                         </button>
@@ -103,7 +103,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
                             {isLoginMode ? "New to our platform? " : "Already have an account? "}
                             <button
                                 onClick={() => setIsLoginMode(!isLoginMode)}
-                                className="text-blue-600 font-semibold hover:underline"
+                                className="text-primary font-semibold hover:underline"
                             >
                                 {isLoginMode ? 'Create an account' : 'Login'}
                             </button>

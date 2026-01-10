@@ -53,7 +53,7 @@ export default function BlogSection() {
                                                 className="object-cover"
                                             />
                                         ) : (
-                                            <FaNewspaper className="text-4xl text-blue-500/50" />
+                                            <FaNewspaper className="text-4xl text-primary/50" />
                                         )}
                                     </div>
                                     <div className="p-6">
@@ -61,7 +61,7 @@ export default function BlogSection() {
                                         <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">{blog.excerpt}</p>
                                         <div className="flex justify-between items-center text-sm">
                                             <span className="text-gray-500">{blog.date}</span>
-                                            <button className="text-blue-600 font-medium hover:text-blue-700 flex items-center gap-1">
+                                            <button className="text-primary font-medium hover:text-blue-700 flex items-center gap-1">
                                                 Read More <FaArrowRight size={12} />
                                             </button>
                                         </div>
