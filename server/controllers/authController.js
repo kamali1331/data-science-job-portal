@@ -36,10 +36,33 @@ exports.login = async (req, res) => {
         if (user.password !== password) {
             return res.status(401).json({ error: "Invalid credentials" });
         }
-        res.json({ message: "Login successful", user: { id: user.id, email: user.email } });
+
+        // Set session
+        const sessionUser = { id: user.id, email: user.email };
+        req.session.user = sessionUser;
+
+        res.json({ message: "Login successful", user: sessionUser });
     } catch (err) {
         console.error("Error logging in:", err);
         res.status(500).json({ error: "Login Error: " + err.message });
+    }
+};
+
+exports.logout = (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return res.status(500).json({ error: "Logout failed" });
+        }
+        res.clearCookie('connect.sid'); // Default session cookie name
+        res.json({ message: "Logged out successfully" });
+    });
+};
+
+exports.getMe = (req, res) => {
+    if (req.session && req.session.user) {
+        res.json({ user: req.session.user });
+    } else {
+        res.status(401).json({ error: "Not authenticated" });
     }
 };
 

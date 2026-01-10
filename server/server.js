@@ -21,7 +21,10 @@ const PORT = process.env.PORT || 3000;
 setupSecurity(app);
 
 // Standard Middleware
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3001', // Allow Next.js Client
+    credentials: true
+}));
 app.use(express.json());
 app.use(session({
     secret: process.env.SESSION_SECRET || 'secret_key',

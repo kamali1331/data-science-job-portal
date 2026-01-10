@@ -36,9 +36,9 @@ const seedData = async () => {
         if (parseInt(bCheck.rows[0].count) === 0) {
             console.log("Seeding Blogs...");
             const blogs = [
-                { title: "Breaking into Data Science in 2025", excerpt: "Navigate the current job market with essential skills and strategies to land your first role.", author: "Kamali S.", date: "Jan 15, 2025", image: "https://cdn-icons-png.flaticon.com/512/3067/3067254.png" },
-                { title: "Top Data Science Tools & Technologies", excerpt: "Stay ahead with our guide to the most in-demand software, from Python to Power BI.", author: "Kamali S.", date: "Jan 15, 2025", image: "https://cdn-icons-png.flaticon.com/512/2103/2103633.png" },
-                { title: "A Day in the Life of a Data Scientist", excerpt: "Get an inside look at the daily responsibilities and challenges of a modern data professional.", author: "Kamali S.", date: "Jan 15, 2025", image: "https://cdn-icons-png.flaticon.com/512/9324/9324706.png" }
+                { title: "Breaking into Data Science in 2026", excerpt: "Navigate the current job market with essential skills and strategies to land your first role.", author: "Kamali S.", date: "Jan 15, 2026", image: "https://cdn-icons-png.flaticon.com/512/3067/3067254.png" },
+                { title: "Top Data Science Tools & Technologies", excerpt: "Stay ahead with our guide to the most in-demand software, from Python to Power BI.", author: "Kamali S.", date: "Jan 15, 2026", image: "https://cdn-icons-png.flaticon.com/512/2103/2103633.png" },
+                { title: "A Day in the Life of a Data Scientist", excerpt: "Get an inside look at the daily responsibilities and challenges of a modern data professional.", author: "Kamali S.", date: "Jan 15, 2026", image: "https://cdn-icons-png.flaticon.com/512/9324/9324706.png" }
             ];
             for (const blog of blogs) {
                 await pool.query(
