@@ -67,6 +67,13 @@ exports.getMe = (req, res) => {
 };
 
 exports.googleCallback = (req, res) => {
-    // Successful authentication, redirect home.
-    res.redirect('/?login=success&user=' + encodeURIComponent(JSON.stringify(req.user)));
+    // Successful authentication, redirect home (or client app)
+    // For local dev with separate client (localhost:3001), we might need to redirect there with a token or cookie.
+    // Since we are sharing session via cookie (cors credentials: true), redirecting to client should work if domain matches or proxy setup.
+    // For now, redirecting to port 3001 (Next.js Client)
+    res.redirect('http://localhost:3001/?login=success');
+};
+
+exports.githubCallback = (req, res) => {
+    res.redirect('http://localhost:3001/?login=success');
 };

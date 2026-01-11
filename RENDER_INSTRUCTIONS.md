@@ -19,6 +19,7 @@ Use exactly these settings:
 | Setting | Value |
 | :--- | :--- |
 | **Name** | `data-science-job-portal` (or similar) |
+| **Root Directory** | `server` |
 | **Region** | Singapore (or nearest to you) |
 | **Branch** | `master` |
 | **Runtime** | `Node` |

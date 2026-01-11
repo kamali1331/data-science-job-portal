@@ -145,8 +145,9 @@ const initDB = async () => {
 
         try {
             await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS google_id VARCHAR(255);');
+            await pool.query('ALTER TABLE users ADD COLUMN IF NOT EXISTS github_id VARCHAR(255);');
         } catch (e) {
-            console.log("Column google_id might already exist or error adding it:", e.message);
+            console.log("Columns google_id/github_id might already exist or error adding them:", e.message);
         }
 
         console.log("Database tables verified.");
