@@ -2,9 +2,6 @@ const pool = require('../config/db');
 
 exports.register = async (req, res) => {
     const { email, password } = req.body;
-    if (!email || !password) {
-        return res.status(400).json({ error: "Email and Password are required." });
-    }
     try {
         // In a real app, hash the password!
         const result = await pool.query(
@@ -23,9 +20,6 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
     const { email, password } = req.body;
-    if (!email || !password) {
-        return res.status(400).json({ error: "Email and Password are required." });
-    }
     try {
         const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
         if (result.rows.length === 0) {

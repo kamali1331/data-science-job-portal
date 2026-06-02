@@ -24,6 +24,35 @@ exports.createJob = async (req, res) => {
     }
 };
 
+exports.updateJob = async (req, res) => {
+    const { id } = req.params;
+    const { title, company, type, location, role } = req.body;
+
+    const fields = [];
+    const values = [];
+    let idx = 1;
+
+    if (title)    { fields.push(`title = $${idx++}`);    values.push(title); }
+    if (company)  { fields.push(`company = $${idx++}`);  values.push(company); }
+    if (type)     { fields.push(`type = $${idx++}`);     values.push(type); }
+    if (location) { fields.push(`location = $${idx++}`); values.push(location); }
+    if (role)     { fields.push(`role = $${idx++}`);     values.push(role); }
+
+    values.push(id);
+    const sql = `UPDATE jobs SET ${fields.join(', ')} WHERE id = $${idx} RETURNING *`;
+
+    try {
+        const result = await pool.query(sql, values);
+        if (result.rowCount === 0) {
+            return res.status(404).json({ error: "Job not found" });
+        }
+        res.status(200).json(result.rows[0]);
+    } catch (err) {
+        console.error("Error updating job:", err);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+};
+
 exports.deleteJob = async (req, res) => {
     const { id } = req.params;
     try {

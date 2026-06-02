@@ -46,10 +46,6 @@ exports.getInterviewQuestions = async (req, res) => {
 exports.subscribeAlerts = async (req, res) => {
     const { email, provider } = req.body;
 
-    if (!email || !provider) {
-        return res.status(400).json({ error: "Email and Provider are required." });
-    }
-
     try {
         const result = await pool.query(
             'INSERT INTO job_alerts (email, provider) VALUES ($1, $2) RETURNING *',
